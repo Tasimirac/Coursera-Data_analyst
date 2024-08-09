@@ -25,16 +25,17 @@ app = dash.Dash(__name__)
 #---------------------------------------------------------------------------------
 # Create the dropdown menu options
 dropdown_options = [
-      {'label': 'Yearly Statistics', 'value': 'Yearly Statistics'},
-      {'label': 'Recession Period Statistics', 'value': 'Recession Period Statistics'}
-  ],
+    {"label": "Yearly Statistics", "value": "Yearly Statistics"},
+    {"label": "Recession Period Statistics", "value": "Recession Period Statistics"}
+]
+
   # List of years
 year_list = [i for i in range(1980, 2024, 1)]
 
 #---------------------------------------------------------------------------------------
 # Create the layout of the app
 app.layout = html.Div([ #TASK 2.1 Add title to the dashboard
-      html.H1("Automobile Statistics Dashboard"), style={
+      html.H1("Automobile Statistics Dashboard", style={
         'color' : '#503D36',
         'font-size' : 24}),
       html.Div([  #TASK 2.2: Add two dropdown menus
@@ -43,16 +44,14 @@ app.layout = html.Div([ #TASK 2.1 Add title to the dashboard
               id='dropdown-statistics',
               options=dropdown_options,
               value='Select Statistics'
-              placeholder='Select a report type'
-          )
+              )
       ]),
-      html.Div(dcc.Dropdown(
+      html.Div([dcc.Dropdown(
               id='select-year',
               options=[{'label': i, 'value': i} for i in year_list],
               value='Select-year'
-              placeholder='Select-year'
-          )),
-     
+            )
+      ]),
       html.Div([
       html.Div(id='output-container', className='chart-grid', style={'display': 'flex'}),
       ])
@@ -147,7 +146,7 @@ selected_statistics):
         # grouping data for plotting.
         # Hint:Use the columns Year and Automobile_Sales.
         yas= data.groupby('Year')['Automobile_Sales'].mean().reset_index()
-        Y_chart1 = dcc.Graph(figure=px.line(yas, x='Year', y='Automobile_Sales', title='Yearly Automobile Sales'))
+        Y_chart1 = dcc.Graph(figure=px.line(yas, x='Year', y='Automobile_Sales', title='Yearly Automobile Sales {}".format(input_year'))
     
 # Plot 2 Total Monthly Automobile sales using line chart.
         # grouping data for plotting.
@@ -185,3 +184,4 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 
 import requests
+
