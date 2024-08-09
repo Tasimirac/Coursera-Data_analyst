@@ -27,26 +27,30 @@ app = dash.Dash(__name__)
 dropdown_options = [
       {'label': 'Yearly Statistics', 'value': 'Yearly Statistics'},
       {'label': 'Recession Period Statistics', 'value': 'Recession Period Statistics'}
-  ]
+  ],
   # List of years
 year_list = [i for i in range(1980, 2024, 1)]
 
 #---------------------------------------------------------------------------------------
 # Create the layout of the app
-app.layout = html.Div([
-      html.H1("Automobile Statistics Dashboard"),
-      html.Div([
+app.layout = html.Div([ #TASK 2.1 Add title to the dashboard
+      html.H1("Automobile Statistics Dashboard"), style={
+        'color' : '#503D36',
+        'font-size' : 24}),
+      html.Div([  #TASK 2.2: Add two dropdown menus
           html.Label("Select Statistics:"),
           dcc.Dropdown(
               id='dropdown-statistics',
               options=dropdown_options,
               value='Select Statistics'
+              placeholder='Select a report type'
           )
       ]),
       html.Div(dcc.Dropdown(
               id='select-year',
               options=[{'label': i, 'value': i} for i in year_list],
               value='Select-year'
+              placeholder='Select-year'
           )),
      
       html.Div([
@@ -125,11 +129,11 @@ selected_statistics):
                   color='Vehicle_Type',
                   labels={'unemployment_rate': 'Unemployment Rate', 'Automobile_Sales': 'Average Automobile Sales'},
                   title="Effect of Unemployment Rate on Sales of various Vehicle Types")
-          )
+        )
 
         return [
-             html.Div(className='chart-item', children=[html.Div(children=R_chart1),html.Div(children=R_chart2)],style={'display': 'flex'}),
-            html.Div(className='chart-item', children=[html.Div(children=R_chart3),html.Div(children=R_chart4)],style={'display': 'flex'})
+                html.Div(className='chart-item', children=[html.Div(children=R_chart1),html.Div(children=R_chart2)],style={'display': 'flex'}),
+                html.Div(className='chart-item', children=[html.Div(children=R_chart3),html.Div(children=R_chart4)],style={'display': 'flex'})
             ]
 
 # TASK 2.6: Create and display graphs for Yearly Report Statistics
@@ -155,7 +159,7 @@ selected_statistics):
   # Plot bar chart for average number of vehicles sold during the given year
          # grouping data for plotting.
          # Hint:Use the columns Year and Automobile_Sales
-        avr_vdata=data.groupby('Vehicle_Type')['Automobile_Sales'].mean().reset_index()
+        avr_vdata=data.groupby('Year')['Automobile_Sales'].mean().reset_index()
         Y_chart3 = dcc.Graph( figure=px.bar(avr_vdata,
                                               x='Vehicle_Type',
                                               y='Automobile_Sales',
@@ -170,7 +174,8 @@ selected_statistics):
 #TASK 2.6: Returning the graphs for displaying Yearly data
         return [
                 html.Div(className='chart-item', children=[html.Div(children=Y_chart1),html.Div(children=Y_chart2)],style={'display':'flex'}),
-                html.Div(className='chart-item', children=[html.Div(children=Y_chart3),html.Div(children=Y_chart4)],style={'display': 'flex'})]
+                html.Div(className='chart-item', children=[html.Div(children=Y_chart3),html.Div(children=Y_chart4)],style={'display': 'flex'})
+                ]
 
     else:
         return None
@@ -180,4 +185,3 @@ if __name__ == '__main__':
     app.run_server(debug=True)
 
 import requests
-
